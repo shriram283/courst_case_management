@@ -109,12 +109,20 @@
         <label><b>Phone Number: </b>(+91)(0)<%= ph_no %></label>
         <br>
 
-        <!-- <button type="submit">Continue</button> -->
+  
+         
     </form>
-
+  
     <!-- <form action="/lawyer/dashboard<%=  %>" method="GET">
         <button type="submit">Open Chat</button>
     </form> -->
+    <button class="back-button" onclick="goBack()">Back</button>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
 </body>
 
 </html>

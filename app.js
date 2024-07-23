@@ -6,6 +6,7 @@ const session = require('express-session');
 const passport = require('passport');
 const express = require('express');
 const app = express();
+require('dotenv').config({path: 'config.env'});
 
 //passport config
 require('./config/passport')(passport);
@@ -14,12 +15,17 @@ require('./config/passport')(passport);
 // const db = require('./config/keys').MongoURI; //for MongoDB Atlas
 //const db = 'mongodb://127.0.0.1:27017/court_case_management' //for local MongoDB
 
-mongoose.connect('mongodb+srv://shriramkekan283:Shri%40283@cluster0.7g9zbh3.mongodb.net/', {
+const PORT = process.env.PORT || 5000;
+mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true,
     useFindAndModify: false
-})
+}).then(() => {
+    console.log('MongoDB connected');
+}).catch((err) => {
+    console.error('Error connecting to MongoDB:', err.message);
+});
 
 const dbConnection = mongoose.connection;
 
@@ -91,7 +97,6 @@ app.use('/lawyer', require('./routes/lawyer.js'));
 app.use('/chat', require('./routes/chat.js'));
 
 
-const PORT = process.env.PORT || 5000;
 app.listen
     (
         PORT,

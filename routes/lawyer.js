@@ -9,7 +9,6 @@ const { ensureAuthenticated } = require('../config/auth');
 const LawyerDetails = require('../models/LawyerDetails');
 const CaseDetails = require('../models/CaseDetails');
 const User = require('../models/User');
-
 //dashboard
 router.get
     (
@@ -133,43 +132,29 @@ router.post('/resolve_case/:case_id', ensureAuthenticated, async (req, res) => {
 });
 
 //display profile
-router.get
-    (
-        '/display_lawyer_profile/:lawyer_id',
-        ensureAuthenticated,
-        async (req, res) => {
-            await LawyerDetails.find
-                (
-                    {
-                        lawyer_id: ObjectId(req.params.lawyer_id)
-                    }
-                ).then
-                (
-                    async (lawyer_details) => {
-                        await User.find
-                            (
-                                {
-                                    _id: ObjectId(req.params.lawyer_id)
-                                }
-                            ).then
-                            (
-                                (lawyer_bio) => {
-                                    const { fname, mname, lname, email } = lawyer_bio[0];
-                                    const { company_name, pref_case_types, exp_yrs, experience, fees, fee_descp, dob, age, ph_no } = lawyer_details[0];
-
-                                    res.render('display_lawyer_profile', { fname, mname, lname, email, company_name, pref_case_types, exp_yrs, experience, fees, fee_descp, dob, age, ph_no });
-                                }
-                            ).catch
-                            (
-                                (err) => console.log(err)
-                            );
-                    }
-                ).catch
-                (
-                    (err) => console.log(err)
-                );
+router.get('/display_lawyer_profile/:lawyer_id', ensureAuthenticated, async (req, res) => {
+    try {
+        const lawyer_details = await LawyerDetails.find({ lawyer_id: ObjectId(req.params.lawyer_id) }).exec();
+        
+        if (!lawyer_details || lawyer_details.length === 0) {
+            throw new Error('Lawyer details not found');
         }
-    );
+
+        const lawyer_bio = await User.find({ _id: ObjectId(req.params.lawyer_id) }).exec();
+        
+        if (!lawyer_bio || lawyer_bio.length === 0) {
+            throw new Error('Lawyer bio not found');
+        }
+
+        const { fname, mname, lname, email } = lawyer_bio[0];
+        const { company_name, pref_case_types, exp_yrs, experience, fees, fee_descp, dob, age, ph_no } = lawyer_details[0];
+
+        res.render('display_lawyer_profile', { fname, mname, lname, email, company_name, pref_case_types, exp_yrs, experience, fees, fee_descp, dob, age, ph_no });
+    } catch (err) {
+        console.error('Error retrieving lawyer profile:', err);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
 
 module.exports = router;

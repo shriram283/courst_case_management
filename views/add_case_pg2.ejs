@@ -4,21 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/css/add_case_pg2_style.css">
+    <title>Select a Lawyer</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
         }
 
         .container {
             max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
+            margin: 50px auto;
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-top: 50px;
+            padding: 20px;
         }
 
         #main {
@@ -27,6 +28,7 @@
 
         h1 {
             color: #333;
+            margin-bottom: 20px;
         }
 
         table {
@@ -35,7 +37,8 @@
             margin-top: 20px;
         }
 
-        th, td {
+        th,
+        td {
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid #ddd;
@@ -47,6 +50,7 @@
 
         input[type="radio"] {
             margin-right: 5px;
+            cursor: pointer;
         }
 
         button {
@@ -56,10 +60,26 @@
             padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
         button:hover {
             background-color: #45a049;
+        }
+
+        .details-btn {
+            background-color: #3498db;
+            padding: 8px 12px;
+            border-radius: 3px;
+            color: #fff;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .details-btn:hover {
+            background-color: #2980b9;
         }
     </style>
 </head>
@@ -68,34 +88,28 @@
     <form action="/client/add_case_pg2" method="POST">
         <section class="container">
             <div id="main">
-                <h1><strong>Please Select a Lawyer</strong></h1>
-                <div class="tbl-header">
-                    <table>
-                        <thead>
+                <h1>Please Select a Lawyer</h1>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Select</th>
+                            <th>Lawyer's Name</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% lawyers.forEach((lawyer) => { if(lawyer.is_profile_complete === "Y") { %>
                             <tr>
-                                <th>Select</th>
-                                <th>Lawyer's Name</th>
-                                <th>Details</th>
+                                <td>
+                                    <label><input required type="radio" name="lawyer_id" value="<%= lawyer._id %>"></label>
+                                </td>
+                                <td><%= lawyer.fname %></td>
+                                <td><a href="/lawyer/display_lawyer_profile/<%= lawyer._id %>" class="details-btn">More Details</a></td>
                             </tr>
-                        </thead>
-                    </table>
-                </div>
-                <div class="tbl-content">
-                    <table>
-                        <tbody>
-                            <% lawyers.forEach((lawyer) => { if(lawyer.is_profile_complete === "Y") { %>
-                                <tr>
-                                    <td>
-                                        <label><input required type="radio" name="lawyer_id" value="<%= lawyer._id %>"></label>
-                                    </td>
-                                    <td><%= lawyer.fname %></td>
-                                    <td><form action="/lawyer/display_lawyer_profile/<%= lawyer._id %>" method="GET"><button type="submit">More Details</button></form></td>
-                                </tr>
-                            <% } }); %>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="center">
+                        <% } }); %>
+                    </tbody>
+                </table>
+                <div style="margin: 25px;">
                     <button type="submit"><strong>Proceed</strong></button>
                 </div>
             </div>

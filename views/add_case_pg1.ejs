@@ -1,37 +1,235 @@
 <!DOCTYPE html>
-<link rel="stylesheet" type="text/css" href="/css/add_case_pg1_style.css">
-<div class="container">  
-  <form id="addcase" action="/client/add_case_pg1" method="POST">
-    <h3>Add a case form</h3>
-    <h4>Please fill up the following details to add a case</h4>
-    <fieldset>
-      Case name<span class="required">*</span>      
-      <input placeholder="Give the case a short name" name="case_name" type="text" required autofocus>
-    </fieldset>
-    <fieldset>
-      Select the type of case
-      <select type="case_type" name="case_type">
-        <option value="Criminal">Criminal</option>
-        <option value="Civil">Civil</option>
-        <option value="Family matters">Family matters</option>
-        <option value="Land">Land</option>
-        <option value="Co op court dispute">Co op court dispute</option>
-        <option value="Charity trust">Charity trust</option>
-        <option value="SEBI">SEBI</option>
-      </select>
-    </fieldset>
-    <fieldset>
-      Case description<span class="required">*</span>  
-      <textarea placeholder="Enter the case details here...." name="case_descp" required></textarea>
-    </fieldset>
-    <fieldset>
-      <button name="submit" type="submit" id="addcase-submit">Proceed</button>
-    </fieldset>
-  </form>
-  <form id="addcase" action="/client/dashboard" method="GET">
-    <fieldset>
-      <button type="submit">Back</button>
-    </fieldset>
-  </form>
-</div>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add a Case Form</title>
+  <link rel="stylesheet" type="text/css" href="/css/add_case_pg1_style.css"> <!-- Include your custom CSS file -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap" rel="stylesheet">
+  <style>
+  * {
+    margin: 0;
+    padding: 0;
+    outline: none;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 10px;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(115deg, #56d8e4 10%, #9f01ea 90%);
+  }
+
+  .container {
+    max-width: 800px;
+    background: #fff;
+    width: 800px;
+    padding: 25px 40px 10px 40px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .container .text {
+    text-align: center;
+    font-size: 41px;
+    font-weight: 600;
+    background: -webkit-linear-gradient(right, #56d8e4, #9f01ea, #56d8e4, #9f01ea);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .container form {
+    padding: 30px 0 0 0;
+  }
+
+  .container form .form-row {
+    display: flex;
+    margin: 32px 0;
+  }
+
+  .form-row .input-data {
+    width: 100%;
+    position: relative;
+  }
+
+  .form-row .input-data input,
+  .form-row .input-data textarea {
+    display: block;
+    width: 100%;
+    height: 40px;
+    font-size: 17px;
+    border: none;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.12);
+    transition: border-color 0.3s ease;
+    background: none;
+  }
+
+  .form-row .input-data input:focus,
+  .form-row .input-data textarea:focus {
+    border-bottom: 2px solid #3498db;
+  }
+
+  .form-row .input-data input:focus~label,
+  .form-row .input-data textarea:focus~label,
+  .form-row .input-data input:valid~label,
+  .form-row .input-data textarea:valid~label {
+    transform: translateY(-20px);
+    font-size: 14px;
+    color: #3498db;
+  }
+
+  .form-row .input-data label {
+    position: absolute;
+    bottom: 10px;
+    font-size: 16px;
+    pointer-events: none;
+    transition: all 0.3s ease;
+  }
+
+  .form-row .input-data .underline {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    background: #3498db;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
+
+  .form-row .input-data input:focus~.underline,
+  .form-row .input-data textarea:focus~.underline,
+  .form-row .input-data input:valid~.underline,
+  .form-row .input-data textarea:valid~.underline {
+    transform: scaleX(1);
+  }
+
+  .form-row .submit-btn {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+
+  .submit-btn .input-data {
+    position: relative;
+    overflow: hidden;
+    height: 45px;
+    width: 25%;
+  }
+
+  .submit-btn .input-data .inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: -webkit-linear-gradient(right, #56d8e4, #9f01ea, #56d8e4, #9f01ea);
+    transition: all 0.4s;
+    transform: translateX(-100%);
+  }
+
+  .submit-btn .input-data:hover .inner {
+    transform: translateX(0);
+  }
+
+  .submit-btn .input-data input[type="submit"] {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 17px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+  }
+
+  @media (max-width: 700px) {
+    .container .text {
+      font-size: 30px;
+    }
+
+    .container form {
+      padding: 10px 0 0 0;
+    }
+
+    .container form .form-row {
+      display: block;
+    }
+
+    .form-row .input-data {
+      margin: 35px 0!important;
+    }
+
+    .submit-btn .input-data {
+      width: 40%!important;
+    }
+  }
+  /* Add this style in your <style> section */
+#backForm {
+  text-align: center; /* Center align the button */
+  margin-top: 20px; /* Provide some top margin */
+}
+
+#backForm button {
+  background-color: #3498db; /* Background color */
+  color: #fff; /* Text color */
+  padding: 10px 20px; /* Padding inside the button */
+  border: none; /* Remove default border */
+  border-radius: 4px; /* Rounded corners */
+  font-size: 16px; /* Font size */
+  cursor: pointer; /* Cursor style on hover */
+  transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+#backForm button:hover {
+  background-color: #2980b9; /* Darker background color on hover */
+}
+
+</style>
+</head>
+
+<body>
+  <div class="container">
+    <form id="addcase" action="/client/add_case_pg1" method="POST">
+      <h3>Add a case form</h3>
+      <h4>Please fill up the following details to add a case</h4>
+      <fieldset>
+        Case name<span class="required">*</span>      
+        <input placeholder="Give the case a short name" name="case_name" type="text" required autofocus>
+      </fieldset>
+      <fieldset>
+        Select the type of case
+        <select type="case_type" name="case_type">
+          <option value="Criminal">Criminal</option>
+          <option value="Civil">Civil</option>
+          <option value="Family matters">Family matters</option>
+          <option value="Land">Land</option>
+          <option value="Co op court dispute">Co op court dispute</option>
+          <option value="Charity trust">Charity trust</option>
+          <option value="SEBI">SEBI</option>
+        </select>
+      </fieldset>
+      <fieldset>
+        Case description<span class="required">*</span>  
+        <textarea placeholder="Enter the case details here...." name="case_descp" required></textarea>
+      </fieldset>
+      <fieldset>
+        <button name="submit" type="submit" id="addcase-submit">Proceed</button>
+      </fieldset>
+    </form>
+
+    <!-- Back Button Form -->
+    <form id="backForm" action="/client/dashboard" method="GET">
+      <fieldset>
+        <button type="submit">Back</button>
+      </fieldset>
+    </form>
+  </div>
+</body>
 </html>

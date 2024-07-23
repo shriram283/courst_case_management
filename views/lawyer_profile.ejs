@@ -8,7 +8,6 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            /* background-color: #f8f9fa; */
             background: url('https://media.istockphoto.com/id/1346156607/photo/empty-american-style-courtroom-supreme-court-of-law-and-justice-trial-stand-courthouse-before.webp?b=1&s=170667a&w=0&k=20&c=ixLiZ8-eZ80AifvMC_WqRYO9_0Tzd_mWOUnMHXMbNEE=') no-repeat center center fixed;
             background-size: cover;
             margin: 0;
@@ -76,7 +75,7 @@
 
     <%- include('./partials/messages.ejs') %>
 
-    <form action="/lawyer/profile" method="POST">
+    <form action="/lawyer/profile" method="POST" onsubmit="calculateAge(event)">
         <div class="container">
             <label for="bar_id">BAR Council ID <span style="color: red;">*</span></label>
             <input type="text" placeholder="Enter your BAR Council ID" name="bar_id" required>
@@ -89,34 +88,45 @@
 
             <label for="exp_yrs">No. of years of experience <span style="color: red;">*</span></label>
             <input type="number" placeholder="Enter no. of years of experience as a lawyer" name="exp_yrs" required>
-            <br>
 
             <label for="exp">Experience <span style="color: red;">*</span></label>
-            <br>
             <textarea placeholder="Enter your experience as a lawyer" name="exp" required></textarea>
-            <br>
 
             <label for="fees">Fees <span style="color: red;">*</span> Rs.</label>
             <input type="number" placeholder="Enter your fees" name="fees" required>
-            <br>
 
             <label for="fee_descp">Fee structure <span style="color: red;">*</span></label>
             <input type="text" placeholder="Enter your fee structure" name="fee_descp" required>
 
             <label for="dob">Date Of Birth</label>
-            <input type="date" placeholder="Enter your date of birth" name="dob">
-            <br>
-
+            <input type="date" placeholder="Enter your date of birth" name="dob" id="dob">
+            
             <label for="age">Age (in Years)</label>
-            <input type="number" placeholder="Enter your age" name="age">
-            <br>
-
+            <input type="number" placeholder="Age will be calculated automatically" name="age" id="age" readonly>
+            
             <label for="ph_no">Phone Number <span style="color: red;">*</span> (+91)(0)</label>
             <input type="number" placeholder="Enter your 10-digit phone number" name="ph_no" required>
 
-            <button type="submit" class="button">Register Details</button>
+            <button type="submit">Register Details</button>
         </div>
     </form>
+
+    <script>
+        function calculateAgeAndDisplay() {
+            const dob = new Date(document.getElementById('dob').value);
+            const today = new Date();
+            let age = today.getFullYear() - dob.getFullYear();
+            const monthDiff = today.getMonth() - dob.getMonth();
+            
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+                age--;
+            }
+            
+            document.getElementById('age').value = age;
+            document.getElementById('age').style.display = 'block'; // Show the age field
+        }
+    </script>
+    
 </body>
 
 </html>

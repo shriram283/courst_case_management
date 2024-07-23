@@ -25,12 +25,11 @@
 
         h2 {
             color: #333;
+            text-align: center; /* Center align the heading */
         }
 
         label {
-            font-weight: bold;
-            margin-bottom: 5px;
-            display: block;
+            font-weight: normal; /* Ensure labels are not bold */
         }
 
         .back-button {
@@ -52,61 +51,27 @@
 </head>
 
 <body>
-    <center>
-        <h2><i class="fa fa-user-plus" style="font-size:32px"> <%= case_name %>'s Details</i></h2>
-    </center>
+    <h2><i class="fa fa-user-plus" style="font-size:32px"></i> <%= case_name %>'s Details</h2>
 
-    <!-- <form action="/client/dashboard" method="GET">
-        <div class="container">
-            <label><b>Case Name:</b></label>
-            <br>
-            <label><%= case_name %></label>
-            <br>
+    <div class="container">
+        <form action="<%= user_type === 'c' ? '/client/dashboard' : '/lawyer/dashboard' %>" method="GET">
+            <label>Case Name:</label>
+            <span><%= case_name %></span><br><br>
 
-            <label><b>Case Type:</b></label>
-            <br>
-            <label><%= case_type %></label>
-            <br>
+            <label>Case Type:</label>
+            <span><%= case_type %></span><br><br>
 
-            <label><b>Case Description:</b></label>
-            <br>
-            <label><%= case_descp %></label>
-            <br>
+            <label>Case Description:</label>
+            <span><%= case_descp %></span><br><br>
 
             <button type="submit" class="back-button">Back</button>
-        </div>
-    </form> -->
+        </form>
 
-    
-    <form action="<%= user_type === 'c' ? '/client/dashboard' : '/lawyer/dashboard' %>" method="GET">
-        <div class="container">
-            <label><b>Case Name:</b></label>
-            <br>
-            <label><%= case_name %></label>
-            <br>
-    
-            <label><b>Case Type:</b></label>
-            <br>
-            <label><%= case_type %></label>
-            <br>
-    
-            <label><b>Case Description:</b></label>
-            <br>
-            <label><%= case_descp %></label>
-            <br>
-    
-            <button type="submit" class="back-button">Back</button>
-        </div>
-    </form>
-    
-
-    <% if (user_type === "c") { %>
-        <form action="/lawyer/display_lawyer_profile/<%= lawyer_id %>" method="GET" id="lawyer-details-form"></form>
-        <script src="/js/show_lawyer_details_btn.js"></script>
-    <!-- <% } else if (user_type === "l") { %>
-        <form action="/chat/get_chat/<%= _id %>" method="GET" id="case-details-form"></form>
-        <script src="/js/show_chat_btn.js"></script> -->
-    <% } %>
+        <% if (user_type === "c") { %>
+            <form action="/lawyer/display_lawyer_profile/<%= lawyer_id %>" method="GET" id="lawyer-details-form"></form>
+            <script src="/js/show_lawyer_details_btn.js"></script>
+        <% } %>
+    </div>
 </body>
 
 </html>

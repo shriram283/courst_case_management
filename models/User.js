@@ -5,34 +5,34 @@ const UserSchema = new mongoose.Schema
         {
             personType: {
                 type: String,
-                required: true
+                required: true,
             },
             fname: {
                 type: String,
-                required: true
+                required: true,
             },
             mname: {
-                type: String
+                type: String,
             },
             lname: {
                 type: String,
-                required: true
+                required: true,
             },
             email: {
                 type: String,
-                required: true
+                required: true,
             },
             password: {
                 type: String,
-                required: true
+                required: true,
             },
             date: {
                 type: Date,
-                default: Date.now
+                default: Date.now,
             },
             is_profile_complete: {
                 type: String,
-                default: "N"
+                default: "N",
             }
         }
     );
